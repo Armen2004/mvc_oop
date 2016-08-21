@@ -29,4 +29,11 @@ interface RouterInterface
      * @return mixed
      */
     public static function delete($key, $value);
+
+    /**
+     * @param $key
+     * @param $value
+     * @return mixed
+     */
+    public static function any($key, $value);
 }

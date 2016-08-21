@@ -1,6 +1,6 @@
 <?php namespace Core\interfaces;
 
-interface BaseInterface
+interface ControllerInterface
 {
 
 }

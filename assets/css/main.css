@@ -1,0 +1,42 @@
+.no-padding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.effect-border {
+    margin: 10px 0;
+    padding-bottom: 20px;
+    border: 1px solid #ccc;
+    background: #f6931f;
+}
+
+.effect-border {
+    color: #fff;
+}
+
+.amount {
+    color: red;
+    border: none;
+    width: 25px;
+    background: transparent;
+}
+
+.blur {
+    -webkit-filter: blur(4px);
+    filter: blur(4px);
+}
+
+.brightness {
+    -webkit-filter: brightness(250%);
+    filter: brightness(250%);
+}
+
+.contrast {
+    -webkit-filter: contrast(180%);
+    filter: contrast(180%);
+}
+
+.grayscale {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}

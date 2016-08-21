@@ -1,6 +1,8 @@
 <?php namespace Core;
 
 use PDO;
+use Exception;
+use PDOException;
 use Core\interfaces\DatabaseInterface;
 
 class Database implements DatabaseInterface
@@ -8,7 +10,8 @@ class Database implements DatabaseInterface
     /**
      * @var database
      */
-    const DB = "sqlite:testDb.sqlite";
+    const DB = "sqlite:testDb.db";
+    const DB_NAME = "testDb.db";
 
     /**
      * @var null
@@ -24,7 +27,20 @@ class Database implements DatabaseInterface
             try {
                 self::$connect = new PDO(self::DB);
                 self::$connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            } catch (\Exception $e) {
+
+                if (is_file(self::DB_NAME) && filesize(self::DB_NAME) == 0) {
+                    $sql = "CREATE TABLE files( 
+                              id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                              image_name TEXT, 
+                              image_path TEXT, 
+                              image_style TEXT
+                              )";
+                    self::$connect->exec($sql);
+                }
+
+            } catch (Exception $e) {
+                exit($e->getMessage());
+            } catch (PDOException $e) {
                 exit($e->getMessage());
             }
         }

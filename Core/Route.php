@@ -30,7 +30,7 @@ class Route implements RouterInterface
      */
     public static function post($key, $value)
     {
-        self::$routes["get"][$key] = $value;
+        self::$routes["post"][$key] = $value;
     }
 
     /**
@@ -40,7 +40,7 @@ class Route implements RouterInterface
      */
     public static function put($key, $value)
     {
-        self::$routes["get"][$key] = $value;
+        self::$routes["put"][$key] = $value;
     }
 
     /**
@@ -50,33 +50,54 @@ class Route implements RouterInterface
      */
     public static function delete($key, $value)
     {
-        self::$routes["get"][$key] = $value;
+        self::$routes["delete"][$key] = $value;
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     * @return mixed
+     */
+    public static function any($key, $value)
+    {
+        self::get($key, $value);
+        self::post($key, $value);
     }
 
     public static function getRoute()
     {
         self::$currentURL = Factory::make(Url::class)->get();
 
-        require_once APP . "config/routes.php";
 
+        require_once APP . "routes.php";
 
         self::$currentRequestMethod = strtolower($_SERVER['REQUEST_METHOD']);
+//        echo "<pre>";
+//        print_r(self::$routes);
+//        die;
 
         if (array_key_exists(self::$currentURL, self::$routes[self::$currentRequestMethod])) {
 
-            $routeParts = explode("/", self::$routes[self::$currentRequestMethod][self::$currentURL]);
+            if (self::$routes[self::$currentRequestMethod][self::$currentURL] instanceof \Closure) {
+                exit(self::$routes[self::$currentRequestMethod][self::$currentURL]->__invoke());
+            } else {
+                $routeParts = explode("@", self::$routes[self::$currentRequestMethod][self::$currentURL]);
 
-            if (!empty($routeParts[0]))
-                self::$currentRoutes['controller'] = $routeParts[0];
-            self::$currentRoutes['method'] = !empty($routeParts[1]) ? $routeParts[1] : "index";
+                if (!empty($routeParts[0]))
+                    self::$currentRoutes['controller'] = $routeParts[0];
+                self::$currentRoutes['method'] = !empty($routeParts[1]) ? $routeParts[1] : "index";
 
-            self::$currentRoutes["parameters"] = null;
-            if (!empty($routeParts[2])) {
-                unset($routeParts[0], $routeParts[1]);
-                self::$currentRoutes["parameters"] = array_values($routeParts);
+                self::$currentRoutes["parameters"] = null;
+                if (!empty($routeParts[2])) {
+                    unset($routeParts[0], $routeParts[1]);
+                    self::$currentRoutes["parameters"] = array_values($routeParts);
+                }
             }
+            return self::$currentRoutes;
         }
 
-        return self::$currentRoutes;
+        Factory::make(Error::class)->methodNotAllowed();
+
     }
+
 }

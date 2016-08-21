@@ -4,10 +4,6 @@ use ReflectionClass;
 
 class Factory
 {
-    /**
-     * @var array $createdObjects
-     */
-    private static $createdObjects;
 
     /**
      * @param $className

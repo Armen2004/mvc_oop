@@ -1,7 +1,11 @@
 <?php namespace Core;
 
-class Models extends Database
+use Core\traits\Crud;
+
+class Model extends Database
 {
+    use Crud;
+
     public $db;
 
     public function __construct()

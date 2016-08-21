@@ -9,7 +9,11 @@ class Url
 
     public function __construct()
     {
-        $this->cleanUrl = ltrim(rtrim(str_replace("index.php","",strstr($_SERVER["PHP_SELF"],"index.php")),"/"),"/");
+        if (strpos($_SERVER['REQUEST_URI'], 'index.php')) {
+            $this->cleanUrl = explode('/', filter_var(explode('?', $_SERVER['REQUEST_URI'])[1], FILTER_SANITIZE_URL));
+        } else {
+            $this->cleanUrl = filter_var(str_replace(explode('/', trim($_SERVER['PHP_SELF'], '/'))[0] . "/", '', ltrim($_SERVER['REQUEST_URI'], '/')), FILTER_SANITIZE_URL);
+        }
     }
 
     /**
@@ -17,6 +21,8 @@ class Url
      */
     public function get()
     {
-        return $this->cleanUrl;
+        if ($this->cleanUrl)
+            return $this->cleanUrl;
+        return '/';
     }
 }

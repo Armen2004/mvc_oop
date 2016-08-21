@@ -2,54 +2,35 @@
 
 class App
 {
-    private $_controller = "HomeController";
-    private $_model = "Home";
-    private $_view;
-
-    public function __construct()
-    {
-        //echo "11";
-    }
 
     public static function run()
     {
         $routes = Route::getRoute();
-        var_dump($routes);
-        die;
+
         if (!empty($routes['controller'])) {
 
             $url_controller = $routes['controller'];
 
-            $file = APP . 'controllers' . DIRECTORY_SEPARATOR . $url_controller;
+            $file = APP . 'Controllers' . DS . $url_controller;
 
-            if (file_exists($file . '.php')) {
+            if (is_file($file . EXT)) {
 
-                $controller = new $file;
-                $url_method = 'index';
+                $controller = Factory::make($file);
+                $method = $routes['method'];
 
-                // Checking our controller has this method
-                if (!empty($routes['method'])) {
-                    $url_method = $routes['method'];
-                }
-
-                if (method_exists($controller, $url_method)) {
-                    $controller->$url_method();
+                if (method_exists($controller, $method)) {
+                    $controller->$method();
                 } else {
-
-                    Error::CreateError()->no_page();
-
+                    Factory::make(Error::class)->methodNotFound();
                 }
 
             } else {
-                Error::CreateError()->no_page();
+                Factory::make(Error::class)->fileNotFound();
             }
 
         } else {
-
-            echo 'Welcome Pagee';
-
+            echo 'Welcome Page';
         }
-
     }
 
 }

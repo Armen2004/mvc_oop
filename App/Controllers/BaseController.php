@@ -1,7 +1,11 @@
-<?php namespace App;
+<?php namespace App\Controllers;
 
+use Core\Controller;
 
-class BaseController
+abstract class BaseController extends Controller
 {
-
+    /**
+     * @return mixed
+     */
+    public abstract function index();
 }
