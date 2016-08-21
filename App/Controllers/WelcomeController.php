@@ -48,8 +48,7 @@ class WelcomeController extends BaseController
                     if (move_uploaded_file($_FILES["file"]["tmp_name"][$key], $target_file)) {
                         $files = [
                             'image_name' => strip_tags($value),
-                            'image_path' => strip_tags(BASE_PATH . basename($value)),
-                            'image_style' => strip_tags('a')
+                            'image_path' => strip_tags(BASE_PATH . basename($value))
                         ];
 
                         Factory::make(Files::class)->insertData($files);

@@ -21,9 +21,9 @@ trait Query
 
     public function insert($value)
     {
-        $sql = "INSERT INTO {$this->getTable()} ('image_name', 'image_path', 'image_style') VALUES (?, ?, ?)";
+        $sql = "INSERT INTO {$this->getTable()} ('image_name', 'image_path') VALUES (?, ?)";
         $result = $this->db->prepare($sql);
-        $result->execute([$value['image_name'], $value['image_path'], $value['image_style']]);
+        $result->execute([$value['image_name'], $value['image_path']]);
         return $result;
     }
 
