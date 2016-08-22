@@ -3,7 +3,7 @@
     <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-<script src="<?=BASE_PATH?>assets/js/main.js"></script>
+<script src="<?=BASE_URL?>assets/js/main.js"></script>
 
 </body>
 </html>

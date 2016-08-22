@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 
 use Core\Factory;
+use App\Models\Styles;
 use App\Models\Files;
 
 class WelcomeController extends BaseController
@@ -8,33 +9,69 @@ class WelcomeController extends BaseController
     public function index()
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $this->upload();
-            header('Location:' . $_SERVER['REQUEST_URI']);
+            $files = $_FILES;
+            $posts = $_POST;
+//            echo "<pre>";
+//            print_r($files);
+//            print_r($posts);
+//            die;
+            header('Content-type: application/json');
+            exit(json_encode($this->upload($files, $posts)));
         }
 
         $this->view->template('welcome/welcome');
     }
 
-    public function upload()
+    public function newStyle()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+            $data = [
+                'style_name' => strip_tags($_POST['style_name']),
+                'style_text' => strip_tags($_POST['style_text'])
+            ];
+
+            Factory::make(Styles::class)->insertData($data);
+
+            header('Content-type: application/json');
+            exit(json_encode($data));
+        }
+        header('Location:' . $_SERVER['HTTP_REFERER']);
+    }
+
+    public function getStyles()
+    {
+        $data = Factory::make(Styles::class)->getAll();
+        header('Content-type: application/json');
+        exit(json_encode($data));
+    }
+
+    public function getImages()
+    {
+        $data = Factory::make(Files::class)->getAll();
+        header('Content-type: application/json');
+        exit(json_encode($data));
+    }
+
+    private function upload($files, $posts)
     {
         $error = '';
         $success = '';
-        if (isset($_FILES["file"])) {
-            $target_dir = ASSETS_PATH . "img\\";
-            foreach ($_FILES["file"]["name"] as $key => $value) {
-                $target_file = $target_dir . basename($value);
+        if (isset($files)) {
+            $target_dir = ASSETS_PATH . "img" . DS;
+            foreach ($files as $key => $value) {
+                $file_name = sha1(basename($value['name'])) . "." . pathinfo(basename($value['name']), PATHINFO_EXTENSION);
+                $target_file = $target_dir . $file_name;
                 $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
-                if (isset($_POST["submit"])) {
-                    $check = getimagesize($_FILES["file"]["tmp_name"][$key]);
-                    if ($check !== false) {
-                        $uploadOk = 1;
-                    } else {
-                        $uploadOk = 0;
-                    }
+                $check = getimagesize($value["tmp_name"]);
+                if ($check !== false) {
+                    $uploadOk = 1;
+                } else {
+                    $uploadOk = 0;
                 }
 
-                if (file_exists($target_file) || $_FILES["file"]["size"][$key] > 500000) {
+                if ($value["size"] > 2097152) {
                     $uploadOk = 0;
                 }
 
@@ -45,15 +82,15 @@ class WelcomeController extends BaseController
                 if ($uploadOk == 0) {
                     $error .= "Sorry, your file was not uploaded.<br>";
                 } else {
-                    if (move_uploaded_file($_FILES["file"]["tmp_name"][$key], $target_file)) {
+                    if (move_uploaded_file($value["tmp_name"], $target_file)) {
                         $files = [
-                            'image_name' => strip_tags($value),
-                            'image_path' => strip_tags(BASE_PATH . basename($value))
+                            'image_name' => $file_name,
+                            'image_path' => BASE_URL . "assets/img/" . $file_name,
+                            'image_style' => $posts[$key] == 'undefined' ? '' : $posts[$key]
                         ];
-
                         Factory::make(Files::class)->insertData($files);
-
-                        $success .= "The file " . basename($_FILES["file"]["name"][$key]) . " has been uploaded.";
+//
+                        $success .= "The file " . basename($value["name"]) . " has been uploaded.";
                     } else {
                         $error .= "Sorry, there was an error uploading your file.";
                     }

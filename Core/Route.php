@@ -72,9 +72,6 @@ class Route implements RouterInterface
         require_once APP . "routes.php";
 
         self::$currentRequestMethod = strtolower($_SERVER['REQUEST_METHOD']);
-//        echo "<pre>";
-//        print_r(self::$routes);
-//        die;
 
         if (array_key_exists(self::$currentURL, self::$routes[self::$currentRequestMethod])) {
 

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="<?=BASE_PATH?>assets/css/main.css">
+    <link rel="stylesheet" href="<?=BASE_URL?>assets/css/main.css">
 
 </head>
 

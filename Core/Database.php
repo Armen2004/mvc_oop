@@ -32,7 +32,21 @@ class Database implements DatabaseInterface
                     $sql = "CREATE TABLE files( 
                               id INTEGER PRIMARY KEY AUTOINCREMENT, 
                               image_name TEXT, 
-                              image_path TEXT
+                              image_path TEXT,
+                              image_style TEXT
+                              )";
+                    self::$connect->exec($sql);
+
+                    $sql = "CREATE TABLE styles( 
+                              id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                              style_name TEXT, 
+                              style_text TEXT
+                              )";
+                    self::$connect->exec($sql);
+
+                    $sql = "CREATE TABLE file_style( 
+                              file_id INTEGER, 
+                              style_id INTEGER
                               )";
                     self::$connect->exec($sql);
                 }

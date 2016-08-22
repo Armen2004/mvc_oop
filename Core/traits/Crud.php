@@ -7,9 +7,14 @@ trait Crud
 
     public $class;
 
-    public function create($data)
+    public function createStyle($data)
     {
-        return $this->insert($data);
+        return $this->insertStyle($data);
+    }
+
+    public function createFile($data)
+    {
+        return $this->insertFile($data);
     }
 
     public function read()

@@ -7,4 +7,10 @@ if (!extension_loaded('sqlite3')) {
 require_once "init.php";
 require_once "Core/config/config.php";
 
+//remove old database and create new one
+//if (is_file(DB)) {
+//    unlink(DB);
+//    \Core\Database::connect();
+//}
+
 \Core\App::run();

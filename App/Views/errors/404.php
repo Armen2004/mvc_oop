@@ -9,8 +9,8 @@
             <div class="input-group">
                 <input type="text" placeholder="Write Your Message" class="form-control">
                 <span class="input-group-btn">
-			<button class="btn btn-danger" type="button">Contact Support</button>
-		      </span>
+                    <button class="btn btn-danger" type="button">Contact Support</button>
+                </span>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -20,22 +20,19 @@
         <br><br>
         <div class="col-lg-6 col-lg-offset-3">
             <form action="#">
-
                 <div class="input-group">
                     <input type="text" placeholder="search ..." class="form-control">
                     <span class="input-group-btn">
-			<button class="btn btn-primary" type="button">Send<i class="icon-search"></i></button>
-		      </span>
+                        <button class="btn btn-primary" type="button">Send<i class="icon-search"></i></button>
+                    </span>
                 </div>
-
             </form>
         </div>
         <div class="clearfix"></div>
         <br>
         <div class="col-lg-6  col-lg-offset-3">
             <div class="btn-group btn-group-justified">
-
-                <a href="<?=base_url?>" class="btn btn-success">Return Website</a>
+                <a href="<?= BASE_URL ?>" class="btn btn-success">Return Website</a>
             </div>
         </div>
     </div>

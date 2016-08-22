@@ -2,16 +2,18 @@
 
 use Core\Model;
 
-class Files extends Model
+class Styles extends Model
 {
 
     public function insertData($data)
     {
-        return $this->createFile($data);
+        return $this->createStyle($data);
     }
 
-    public function getAll(){
+    public function getAll()
+    {
         return $this->read();
     }
+
 
 }
